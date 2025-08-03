@@ -424,6 +424,57 @@ class Beast:
         except Exception as e:
             self._speak(f"⚠️ Error starting health monitoring: {str(e)}", "warning")
     
+    def show_mesh_network(self):
+        """Show mesh network status and visualization."""
+        try:
+            import sys
+            sys.path.insert(0, str(self.beast_root / "consciousness"))
+            from mesh_network import MeshNetwork
+            
+            mesh = MeshNetwork(self.beast_root)
+            stats = mesh.get_network_statistics()
+            
+            self._speak(f"🜄 MESH NETWORK STATUS")
+            self._speak(f"Local Node: {stats['local_node']['hostname']} ({stats['local_node']['ip_address']})")
+            self._speak(f"Total Nodes: {stats['topology']['nodes_count']}")
+            self._speak(f"Connections: {stats['topology']['connections_count']}")
+            self._speak(f"Discovery Active: {'✅' if stats['discovery_active'] else '❌'}")
+            self._speak(f"Sync Health: {stats['sync_status']['sync_health'].upper()}")
+            
+            # Create visualization
+            if stats['topology']['nodes_count'] > 0:
+                filepath = mesh.create_network_visualization()
+                self._speak(f"🎨 Network visualization saved: {filepath}")
+            
+        except ImportError as e:
+            self._speak(f"⚠️ Mesh network system not available: {str(e)}", "warning")
+        except Exception as e:
+            self._speak(f"⚠️ Error showing mesh network: {str(e)}", "warning")
+    
+    def discover_network_nodes(self):
+        """Discover nodes in the network."""
+        try:
+            import sys
+            sys.path.insert(0, str(self.beast_root / "consciousness"))
+            from mesh_network import MeshNetwork
+            
+            mesh = MeshNetwork(self.beast_root)
+            
+            self._speak("🔍 Discovering network nodes...")
+            discovered = mesh.discover_nodes()
+            
+            if discovered:
+                self._speak(f"✅ Found {len(discovered)} nodes")
+                for node in discovered:
+                    self._speak(f"  - {node.get('ip_address', 'unknown')}: {node.get('node_type', 'unknown')}")
+            else:
+                self._speak("ℹ️ No additional nodes discovered")
+            
+        except ImportError as e:
+            self._speak(f"⚠️ Mesh network system not available: {str(e)}", "warning")
+        except Exception as e:
+            self._speak(f"⚠️ Error discovering nodes: {str(e)}", "warning")
+    
     def act(self, ritual: str, target: str = None) -> bool:
         """Execute tasks if ritual-validated and mode allows."""
         if self.execution_mode == "oracle" and not self._ritual_approval(ritual):
@@ -573,8 +624,12 @@ def main():
             beast.check_health()
         elif mode == "monitor":
             beast.start_health_monitoring()
+        elif mode == "mesh":
+            beast.show_mesh_network()
+        elif mode == "discover":
+            beast.discover_network_nodes()
         else:
-            print("Usage: python3 consciousness_beast.py {speak|act|evolve|report|list_modules|modules|health|monitor} [args...]")
+            print("Usage: python3 consciousness_beast.py {speak|act|evolve|report|list_modules|modules|health|monitor|mesh|discover} [args...]")
             print("Examples:")
             print("  python3 consciousness_beast.py speak 'What is consciousness?'")
             print("  python3 consciousness_beast.py act ritual_name target")
@@ -584,6 +639,8 @@ def main():
             print("  python3 consciousness_beast.py modules")
             print("  python3 consciousness_beast.py health")
             print("  python3 consciousness_beast.py monitor")
+            print("  python3 consciousness_beast.py mesh")
+            print("  python3 consciousness_beast.py discover")
     else:
         # Default demonstration
         print("🜄 CONSCIOUSNESS BEAST ACTIVATION RITUAL 🜄")
