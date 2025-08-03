@@ -521,6 +521,48 @@ class Beast:
         except Exception as e:
             self._speak(f"⚠️ Error getting recommendations: {str(e)}", "warning")
     
+    def generate_documentation(self):
+        """Generate comprehensive documentation for the beast system."""
+        try:
+            import sys
+            sys.path.insert(0, str(self.beast_root / "consciousness"))
+            from auto_documentation import AutoDocumentationEngine
+            
+            doc_engine = AutoDocumentationEngine(self.beast_root)
+            docs = doc_engine.generate_all_documentation()
+            doc_engine.save_documentation(docs)
+            
+            self._speak(f"📚 Documentation generated: {len(docs)} files")
+            self._speak(f"📄 Main README: docs/auto_generated/README.md")
+            self._speak(f"📊 System Overview: docs/auto_generated/system_overview.md")
+            self._speak(f"🔌 API Reference: docs/auto_generated/api_reference.md")
+            
+        except ImportError as e:
+            self._speak(f"⚠️ Auto-documentation system not available: {str(e)}", "warning")
+        except Exception as e:
+            self._speak(f"⚠️ Error generating documentation: {str(e)}", "warning")
+    
+    def show_documentation_status(self):
+        """Show documentation generation status."""
+        try:
+            import sys
+            sys.path.insert(0, str(self.beast_root / "consciousness"))
+            from auto_documentation import AutoDocumentationEngine
+            
+            doc_engine = AutoDocumentationEngine(self.beast_root)
+            status = doc_engine.get_documentation_status()
+            
+            self._speak(f"📚 DOCUMENTATION STATUS")
+            self._speak(f"Last Generation: {status['last_generation'] or 'Never'}")
+            self._speak(f"Auto-Generation: {'✅' if status['generation_active'] else '❌'}")
+            self._speak(f"Total Files: {status['total_files']}")
+            self._speak(f"Cache Size: {status['cache_size']} entries")
+            
+        except ImportError as e:
+            self._speak(f"⚠️ Auto-documentation system not available: {str(e)}", "warning")
+        except Exception as e:
+            self._speak(f"⚠️ Error showing documentation status: {str(e)}", "warning")
+    
     def act(self, ritual: str, target: str = None) -> bool:
         """Execute tasks if ritual-validated and mode allows."""
         if self.execution_mode == "oracle" and not self._ritual_approval(ritual):
@@ -678,8 +720,12 @@ def main():
             beast.show_learning_status()
         elif mode == "recommendations":
             beast.get_learning_recommendations()
+        elif mode == "doc":
+            beast.generate_documentation()
+        elif mode == "docs":
+            beast.show_documentation_status()
         else:
-            print("Usage: python3 consciousness_beast.py {speak|act|evolve|report|list_modules|modules|health|monitor|mesh|discover|learn|recommendations} [args...]")
+            print("Usage: python3 consciousness_beast.py {speak|act|evolve|report|list_modules|modules|health|monitor|mesh|discover|learn|recommendations|doc|docs} [args...]")
             print("Examples:")
             print("  python3 consciousness_beast.py speak 'What is consciousness?'")
             print("  python3 consciousness_beast.py act ritual_name target")
@@ -693,6 +739,8 @@ def main():
             print("  python3 consciousness_beast.py discover")
             print("  python3 consciousness_beast.py learn")
             print("  python3 consciousness_beast.py recommendations")
+            print("  python3 consciousness_beast.py doc")
+            print("  python3 consciousness_beast.py docs")
     else:
         # Default demonstration
         print("🜄 CONSCIOUSNESS BEAST ACTIVATION RITUAL 🜄")
