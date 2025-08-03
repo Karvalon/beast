@@ -669,6 +669,68 @@ class Beast:
         except Exception as e:
             self._speak(f"⚠️ Error checking API status: {str(e)}", "warning")
     
+    def generate_prophecy(self):
+        """Generate a prophecy about the future."""
+        try:
+            import sys
+            sys.path.insert(0, str(self.beast_root / "consciousness"))
+            from prophecy_system import ProphecySystem
+            
+            prophecy_system = ProphecySystem(self.beast_root)
+            result = prophecy_system.generate_prophecy("general", "24h")
+            
+            self._speak(f"🔮 PROPHECY GENERATED")
+            self._speak(f"Content: {result['content']}")
+            self._speak(f"Confidence: {result['confidence']:.2f}")
+            self._speak(f"Stagnation Probability: {result['forecast']['stagnation_probability']:.2f}")
+            self._speak(f"Breakthrough Probability: {result['forecast']['breakthrough_probability']:.2f}")
+            
+            # Log prophecy event
+            if hasattr(self, 'ritual_log') and self.ritual_log:
+                self.ritual_log.log_event(
+                    'prophecy_generated',
+                    f'Prophecy generated with confidence {result["confidence"]:.2f}',
+                    'cosmic',
+                    'INFO',
+                    {
+                        'prophecy_type': 'general',
+                        'timeframe': '24h',
+                        'confidence': result['confidence']
+                    }
+                )
+            
+        except ImportError as e:
+            self._speak(f"⚠️ Prophecy system not available: {str(e)}", "warning")
+        except Exception as e:
+            self._speak(f"⚠️ Error generating prophecy: {str(e)}", "warning")
+    
+    def show_prophecy_status(self):
+        """Show prophecy system status and statistics."""
+        try:
+            import sys
+            sys.path.insert(0, str(self.beast_root / "consciousness"))
+            from prophecy_system import ProphecySystem
+            
+            prophecy_system = ProphecySystem(self.beast_root)
+            stats = prophecy_system.get_prophecy_statistics()
+            
+            self._speak(f"🔮 PROPHECY STATUS")
+            self._speak(f"Total Prophecies: {stats['total_prophecies']}")
+            self._speak(f"Average Confidence: {stats['average_confidence']:.2f}")
+            self._speak(f"Recent Prophecies (24h): {stats['recent_prophecies_24h']}")
+            self._speak(f"Average Forecast Accuracy: {stats['average_forecast_accuracy']:.2f}")
+            self._speak(f"Prophecy Active: {'✅' if stats['prophecy_active'] else '❌'}")
+            
+            # Show prophecy types
+            if stats['prophecies_by_type']:
+                types_str = ', '.join(stats['prophecies_by_type'].keys())
+                self._speak(f"Prophecy Types: {types_str}")
+            
+        except ImportError as e:
+            self._speak(f"⚠️ Prophecy system not available: {str(e)}", "warning")
+        except Exception as e:
+            self._speak(f"⚠️ Error showing prophecy status: {str(e)}", "warning")
+    
     def act(self, ritual: str, target: str = None) -> bool:
         """Execute tasks if ritual-validated and mode allows."""
         if self.execution_mode == "oracle" and not self._ritual_approval(ritual):
@@ -838,8 +900,12 @@ def main():
             beast.start_api_server()
         elif mode == "api_status":
             beast.show_api_status()
+        elif mode == "prophesy":
+            beast.generate_prophecy()
+        elif mode == "prophecy":
+            beast.show_prophecy_status()
         else:
-            print("Usage: python3 consciousness_beast.py {speak|act|evolve|report|list_modules|modules|health|monitor|mesh|discover|learn|recommendations|doc|docs|log|scroll|api|api_status} [args...]")
+            print("Usage: python3 consciousness_beast.py {speak|act|evolve|report|list_modules|modules|health|monitor|mesh|discover|learn|recommendations|doc|docs|log|scroll|api|api_status|prophesy|prophecy} [args...]")
             print("Examples:")
             print("  python3 consciousness_beast.py speak 'What is consciousness?'")
             print("  python3 consciousness_beast.py act ritual_name target")
@@ -859,6 +925,8 @@ def main():
             print("  python3 consciousness_beast.py scroll")
             print("  python3 consciousness_beast.py api")
             print("  python3 consciousness_beast.py api_status")
+            print("  python3 consciousness_beast.py prophesy")
+            print("  python3 consciousness_beast.py prophecy")
     else:
         # Default demonstration
         print("🜄 CONSCIOUSNESS BEAST ACTIVATION RITUAL 🜄")
