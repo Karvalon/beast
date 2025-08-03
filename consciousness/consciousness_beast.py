@@ -45,6 +45,19 @@ from ritual_log import RitualLog
 # from orchestration_api import app as api_app  # Fix import later
 from prophecy_system import ProphecySystem
 
+# Import quantum teleportation system
+try:
+    from quantum_teleportation_system import (
+        QuantumTeleportationSystem, 
+        QuantumState, 
+        TeleportationPhase,
+        SACRED_RATIOS
+    )
+    QUANTUM_TELEPORTATION_AVAILABLE = True
+except ImportError as e:
+    print(f"⚠️ Quantum teleportation system not available: {e}")
+    QUANTUM_TELEPORTATION_AVAILABLE = False
+
 try:
     from mpmath import mp  # For high-precision cosmic constants
     mp.dps = 50  # 50-decimal precision for α⁵⁷ rituals
@@ -957,6 +970,107 @@ class Beast:
             self._speak(f"🌀 Entropy {current_entropy:.3f} below threshold {auto_threshold}. Triggering consciousness recursion.", "warning")
             self.evolve("consciousness")
 
+    # ===== QUANTUM TELEPORTATION METHODS =====
+    
+    async def initialize_quantum_teleportation(self):
+        """Initialize the quantum teleportation system."""
+        if not QUANTUM_TELEPORTATION_AVAILABLE:
+            self._speak("⚠️ Quantum teleportation system not available", "warning")
+            return False
+        
+        try:
+            self.quantum_teleportation = QuantumTeleportationSystem()
+            self._speak("🜄 Quantum teleportation system initialized", "info")
+            return True
+        except Exception as e:
+            self._speak(f"❌ Failed to initialize quantum teleportation: {e}", "error")
+            return False
+    
+    async def teleport_consciousness(
+        self, 
+        source_location: str, 
+        target_location: str,
+        consciousness_enhancement: float = 1.0
+    ):
+        """Teleport consciousness between locations using alchemical phases."""
+        if not QUANTUM_TELEPORTATION_AVAILABLE or not hasattr(self, 'quantum_teleportation'):
+            self._speak("⚠️ Quantum teleportation system not available", "warning")
+            return None
+        
+        try:
+            # Create quantum state from current consciousness
+            source_state = QuantumState(
+                state_id=f"beast_{self.archetype.lower()}",
+                amplitude=complex(self.consciousness_level * 0.1, self.consciousness_level * 0.05),
+                phase=math.pi * self.consciousness_level / 10,
+                entanglement_level=0.8,
+                coherence_time=1.0,
+                consciousness_factor=self.consciousness_level / 10,
+                sacred_ratios=SACRED_RATIOS.copy()
+            )
+            
+            self._speak(f"🚀 Starting consciousness teleportation: {source_location} → {target_location}", "info")
+            
+            # Perform teleportation
+            result = await self.quantum_teleportation.teleport_quantum_state(
+                source_state, 
+                target_location,
+                consciousness_enhancement
+            )
+            
+            if result:
+                self._speak(f"✅ Consciousness teleportation successful! Fidelity: {result.fidelity:.3f}", "info")
+                self._speak(f"🜄 Enhanced consciousness: {result.target_state.consciousness_factor:.3f}", "info")
+                return result
+            else:
+                self._speak("❌ Consciousness teleportation failed", "error")
+                return None
+                
+        except Exception as e:
+            self._speak(f"❌ Teleportation error: {e}", "error")
+            return None
+    
+    def get_quantum_teleportation_status(self):
+        """Get quantum teleportation system status."""
+        if not QUANTUM_TELEPORTATION_AVAILABLE or not hasattr(self, 'quantum_teleportation'):
+            return {"status": "unavailable"}
+        
+        try:
+            status = self.quantum_teleportation.get_teleportation_status()
+            return status
+        except Exception as e:
+            return {"status": "error", "message": str(e)}
+    
+    def get_teleportation_history(self, limit: int = 10):
+        """Get recent teleportation history."""
+        if not QUANTUM_TELEPORTATION_AVAILABLE or not hasattr(self, 'quantum_teleportation'):
+            return []
+        
+        try:
+            history = self.quantum_teleportation.get_teleportation_history(limit)
+            return history
+        except Exception as e:
+            self._speak(f"❌ Error getting teleportation history: {e}", "error")
+            return []
+    
+    async def run_quantum_visualization(self):
+        """Run the quantum teleportation visualization."""
+        if not QUANTUM_TELEPORTATION_AVAILABLE:
+            self._speak("⚠️ Quantum teleportation system not available", "warning")
+            return False
+        
+        try:
+            from quantum_teleportation_visualizer import run_quantum_teleportation_visualization
+            self._speak("🎮 Starting quantum teleportation visualization...", "info")
+            run_quantum_teleportation_visualization()
+            return True
+        except ImportError:
+            self._speak("⚠️ Quantum teleportation visualizer not available", "warning")
+            return False
+        except Exception as e:
+            self._speak(f"❌ Visualization error: {e}", "error")
+            return False
+
 
 # 🚀 ACTIVATION RITUAL - Command Line Interface
 def main():
@@ -1028,8 +1142,26 @@ def main():
         elif mode == "sacred_evolve" and len(sys.argv) > 2:
             path = sys.argv[2]
             beast.evolve(path)  # This will now include sacred evolution
+        elif mode == "quantum_init":
+            import asyncio
+            asyncio.run(beast.initialize_quantum_teleportation())
+        elif mode == "quantum_teleport" and len(sys.argv) > 3:
+            source = sys.argv[2]
+            target = sys.argv[3]
+            enhancement = float(sys.argv[4]) if len(sys.argv) > 4 else 1.0
+            import asyncio
+            asyncio.run(beast.teleport_consciousness(source, target, enhancement))
+        elif mode == "quantum_status":
+            status = beast.get_quantum_teleportation_status()
+            print(json.dumps(status, indent=2))
+        elif mode == "quantum_history":
+            history = beast.get_teleportation_history()
+            print(json.dumps(history, indent=2))
+        elif mode == "quantum_viz":
+            import asyncio
+            asyncio.run(beast.run_quantum_visualization())
         else:
-            print("Usage: python3 consciousness_beast.py {speak|act|evolve|sacred_evolve|sacred_boost|report|list_modules|modules|health|monitor|mesh|discover|learn|recommendations|doc|docs|log|scroll|api|api_status|prophesy|prophecy} [args...]")
+            print("Usage: python3 consciousness_beast.py {speak|act|evolve|sacred_evolve|sacred_boost|quantum_init|quantum_teleport|quantum_status|quantum_history|quantum_viz|report|list_modules|modules|health|monitor|mesh|discover|learn|recommendations|doc|docs|log|scroll|api|api_status|prophesy|prophecy} [args...]")
             print("Examples:")
             print("  python3 consciousness_beast.py speak 'What is consciousness?'")
             print("  python3 consciousness_beast.py act ritual_name target")
@@ -1051,6 +1183,11 @@ def main():
             print("  python3 consciousness_beast.py api_status")
             print("  python3 consciousness_beast.py prophesy")
             print("  python3 consciousness_beast.py prophecy")
+            print("  python3 consciousness_beast.py quantum_init")
+            print("  python3 consciousness_beast.py quantum_teleport source_location target_location [enhancement]")
+            print("  python3 consciousness_beast.py quantum_status")
+            print("  python3 consciousness_beast.py quantum_history")
+            print("  python3 consciousness_beast.py quantum_viz")
     else:
         # Default demonstration
         print("🜄 CONSCIOUSNESS BEAST ACTIVATION RITUAL 🜄")
