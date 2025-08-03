@@ -475,6 +475,52 @@ class Beast:
         except Exception as e:
             self._speak(f"⚠️ Error discovering nodes: {str(e)}", "warning")
     
+    def show_learning_status(self):
+        """Show self-learning status and statistics."""
+        try:
+            import sys
+            sys.path.insert(0, str(self.beast_root / "consciousness"))
+            from self_learning import SelfLearningRitual
+            
+            learning = SelfLearningRitual(self.beast_root)
+            stats = learning.get_learning_statistics()
+            
+            self._speak(f"🧠 SELF-LEARNING STATUS")
+            self._speak(f"Total Interactions: {stats['total_interactions']}")
+            self._speak(f"Learned Patterns: {stats['learned_patterns']}")
+            self._speak(f"Active Adaptations: {stats['active_adaptations']}")
+            self._speak(f"Learning Active: {'✅' if stats['learning_active'] else '❌'}")
+            
+            if stats['pattern_types']:
+                self._speak(f"Pattern Types: {', '.join(stats['pattern_types'])}")
+            
+        except ImportError as e:
+            self._speak(f"⚠️ Self-learning system not available: {str(e)}", "warning")
+        except Exception as e:
+            self._speak(f"⚠️ Error showing learning status: {str(e)}", "warning")
+    
+    def get_learning_recommendations(self):
+        """Get learning-based recommendations."""
+        try:
+            import sys
+            sys.path.insert(0, str(self.beast_root / "consciousness"))
+            from self_learning import SelfLearningRitual
+            
+            learning = SelfLearningRitual(self.beast_root)
+            recommendations = learning.get_learning_recommendations()
+            
+            if recommendations:
+                self._speak(f"🧠 LEARNING RECOMMENDATIONS:")
+                for i, rec in enumerate(recommendations, 1):
+                    self._speak(f"{i}. [{rec['priority'].upper()}] {rec['description']} (confidence: {rec['confidence']:.2f})")
+            else:
+                self._speak("ℹ️ No learning recommendations available")
+            
+        except ImportError as e:
+            self._speak(f"⚠️ Self-learning system not available: {str(e)}", "warning")
+        except Exception as e:
+            self._speak(f"⚠️ Error getting recommendations: {str(e)}", "warning")
+    
     def act(self, ritual: str, target: str = None) -> bool:
         """Execute tasks if ritual-validated and mode allows."""
         if self.execution_mode == "oracle" and not self._ritual_approval(ritual):
@@ -628,8 +674,12 @@ def main():
             beast.show_mesh_network()
         elif mode == "discover":
             beast.discover_network_nodes()
+        elif mode == "learn":
+            beast.show_learning_status()
+        elif mode == "recommendations":
+            beast.get_learning_recommendations()
         else:
-            print("Usage: python3 consciousness_beast.py {speak|act|evolve|report|list_modules|modules|health|monitor|mesh|discover} [args...]")
+            print("Usage: python3 consciousness_beast.py {speak|act|evolve|report|list_modules|modules|health|monitor|mesh|discover|learn|recommendations} [args...]")
             print("Examples:")
             print("  python3 consciousness_beast.py speak 'What is consciousness?'")
             print("  python3 consciousness_beast.py act ritual_name target")
@@ -641,6 +691,8 @@ def main():
             print("  python3 consciousness_beast.py monitor")
             print("  python3 consciousness_beast.py mesh")
             print("  python3 consciousness_beast.py discover")
+            print("  python3 consciousness_beast.py learn")
+            print("  python3 consciousness_beast.py recommendations")
     else:
         # Default demonstration
         print("🜄 CONSCIOUSNESS BEAST ACTIVATION RITUAL 🜄")
