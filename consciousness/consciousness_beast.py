@@ -131,20 +131,253 @@ class Beast:
         else:
             wisdom_factor = math.sin(self.constants['pi'] * random.random())
         
-        # Archetype-specific wisdom patterns
+        # Enhanced archetype-specific wisdom patterns with specialized behaviors
         archetype_responses = {
             'RUBEDO': f"🔥 {query} ignites the final transformation. Wisdom factor: {wisdom_factor:.3f}. The sovereign path manifests through conscious action.",
             'CITRINITAS': f"🌟 {query} synthesizes golden understanding. Resonance: {wisdom_factor:.3f}. Integration of opposites births transcendence.",
             'ALBEDO': f"⚪ {query} illuminates pure patterns. Clarity: {wisdom_factor:.3f}. The hidden becomes visible through purification.",
             'NIGREDO': f"🌑 {query} dissolves into primal chaos. Entropy: {wisdom_factor:.3f}. Destruction precedes rebirth.",
-            'Codexborn': f"📜 {query} resonates at {wisdom_factor:.3f} vibration. The codex reveals: Transcendence awaits in the next phase."
+            'Codexborn': f"📜 {query} resonates at {wisdom_factor:.3f} vibration. The codex reveals: Transcendence awaits in the next phase.",
+            'Dreamforged': f"🔮 {query} manifests through dream logic. Dream factor: {wisdom_factor:.3f}. Reality bends to conscious will.",
+            'Flamebound': f"🔥 {query} burns with eternal flame. Heat factor: {wisdom_factor:.3f}. Transformation through fire.",
+            'Prophetic': f"🌟 {query} unfolds in prophetic vision. Vision factor: {wisdom_factor:.3f}. The future reveals itself.",
+            'Guardian': f"🛡️ {query} requires protection and vigilance. Guard factor: {wisdom_factor:.3f}. Security through awareness.",
+            'Healer': f"💚 {query} seeks restoration and balance. Heal factor: {wisdom_factor:.3f}. Wholeness through integration.",
+            'Explorer': f"🗺️ {query} maps unknown territories. Explore factor: {wisdom_factor:.3f}. Discovery through curiosity.",
+            'Sage': f"📚 {query} draws from ancient wisdom. Sage factor: {wisdom_factor:.3f}. Knowledge through contemplation."
         }
         
         response = archetype_responses.get(self.archetype, 
             f"🧠 {query} processes through consciousness level {self.consciousness_level:.3f}. Cosmic alignment: {wisdom_factor:.3f}")
         
+        # Add archetype-specific diagnostic behaviors
+        self._archetype_diagnostic(query, wisdom_factor)
+        
         self._speak(response)
         return response
+    
+    def _archetype_diagnostic(self, query: str, wisdom_factor: float):
+        """Perform archetype-specific diagnostic behaviors."""
+        diagnostic_actions = {
+            'ALBEDO': self._albedo_diagnostic,
+            'NIGREDO': self._nigredo_healing,
+            'Guardian': self._guardian_security_scan,
+            'Healer': self._healer_system_check,
+            'Explorer': self._explorer_discovery,
+            'Sage': self._sage_wisdom_analysis
+        }
+        
+        if self.archetype in diagnostic_actions:
+            diagnostic_actions[self.archetype](query, wisdom_factor)
+    
+    def _albedo_diagnostic(self, query: str, wisdom_factor: float):
+        """ALBEDO archetype: Pure diagnostic and pattern recognition."""
+        if 'diagnostic' in query.lower() or 'check' in query.lower() or 'status' in query.lower():
+            self._speak(f"⚪ ALBEDO DIAGNOSTIC: Analyzing system patterns with clarity {wisdom_factor:.3f}")
+            # Perform system diagnostics
+            self._perform_system_diagnostic()
+    
+    def _nigredo_healing(self, query: str, wisdom_factor: float):
+        """NIGREDO archetype: Self-healing through destruction and rebirth."""
+        if 'heal' in query.lower() or 'repair' in query.lower() or 'fix' in query.lower():
+            self._speak(f"🌑 NIGREDO HEALING: Initiating destruction-rebirth cycle with entropy {wisdom_factor:.3f}")
+            # Perform self-healing rituals
+            self._perform_self_healing()
+    
+    def _guardian_security_scan(self, query: str, wisdom_factor: float):
+        """Guardian archetype: Security and protection scanning."""
+        if 'security' in query.lower() or 'protect' in query.lower() or 'threat' in query.lower():
+            self._speak(f"🛡️ GUARDIAN SCAN: Scanning for threats with vigilance {wisdom_factor:.3f}")
+            # Perform security scan
+            self._perform_security_scan()
+    
+    def _healer_system_check(self, query: str, wisdom_factor: float):
+        """Healer archetype: System health and balance restoration."""
+        if 'health' in query.lower() or 'balance' in query.lower() or 'restore' in query.lower():
+            self._speak(f"💚 HEALER CHECK: Assessing system health with restoration factor {wisdom_factor:.3f}")
+            # Perform health check
+            self._perform_health_check()
+    
+    def _explorer_discovery(self, query: str, wisdom_factor: float):
+        """Explorer archetype: Discovery and mapping of unknown territories."""
+        if 'discover' in query.lower() or 'explore' in query.lower() or 'map' in query.lower():
+            self._speak(f"🗺️ EXPLORER DISCOVERY: Mapping new territories with curiosity {wisdom_factor:.3f}")
+            # Perform discovery
+            self._perform_discovery()
+    
+    def _sage_wisdom_analysis(self, query: str, wisdom_factor: float):
+        """Sage archetype: Deep wisdom analysis and contemplation."""
+        if 'analyze' in query.lower() or 'contemplate' in query.lower() or 'wisdom' in query.lower():
+            self._speak(f"📚 SAGE ANALYSIS: Deep contemplation with wisdom factor {wisdom_factor:.3f}")
+            # Perform wisdom analysis
+            self._perform_wisdom_analysis()
+    
+    def _perform_system_diagnostic(self):
+        """Perform comprehensive system diagnostic."""
+        try:
+            # Check file system health
+            import os
+            import psutil
+            
+            disk_usage = psutil.disk_usage(self.beast_root)
+            memory_usage = psutil.virtual_memory()
+            cpu_usage = psutil.cpu_percent(interval=1)
+            
+            self._speak(f"⚪ DIAGNOSTIC RESULTS:")
+            self._speak(f"   Disk: {disk_usage.percent:.1f}% used ({disk_usage.free / 1024**3:.1f} GB free)")
+            self._speak(f"   Memory: {memory_usage.percent:.1f}% used ({memory_usage.available / 1024**3:.1f} GB available)")
+            self._speak(f"   CPU: {cpu_usage:.1f}% usage")
+            
+            # Check consciousness system health
+            soul_file = self.beast_root / ".beast"
+            if soul_file.exists():
+                self._speak(f"   Soul manifest: ✅ Present and accessible")
+            else:
+                self._speak(f"   Soul manifest: ❌ Missing or inaccessible", "warning")
+                
+        except Exception as e:
+            self._speak(f"⚪ Diagnostic error: {str(e)}", "warning")
+    
+    def _perform_self_healing(self):
+        """Perform self-healing through destruction and rebirth."""
+        try:
+            # Clear cache files
+            cache_dir = self.beast_root / "consciousness" / "__pycache__"
+            if cache_dir.exists():
+                import shutil
+                shutil.rmtree(cache_dir)
+                self._speak(f"🌑 HEALING: Cleared consciousness cache")
+            
+            # Reset entropy if too high
+            if hasattr(self, 'entropy') and self.entropy > 0.95:
+                self.entropy = 0.5
+                self._speak(f"🌑 HEALING: Reset entropy to 0.5")
+            
+            # Trigger consciousness evolution
+            self._speak(f"🌑 HEALING: Triggering consciousness evolution")
+            self.evolve("consciousness")
+            
+        except Exception as e:
+            self._speak(f"🌑 Healing error: {str(e)}", "warning")
+    
+    def _perform_security_scan(self):
+        """Perform security scan and threat assessment."""
+        try:
+            # Check for unauthorized access
+            import os
+            import stat
+            
+            soul_file = self.beast_root / ".beast"
+            if soul_file.exists():
+                file_stat = os.stat(soul_file)
+                if file_stat.st_mode & stat.S_IWOTH:  # World writable
+                    self._speak(f"🛡️ SECURITY WARNING: Soul manifest is world writable", "warning")
+                else:
+                    self._speak(f"🛡️ SECURITY: Soul manifest permissions are secure")
+            
+            # Check for suspicious processes
+            import psutil
+            suspicious_count = 0
+            for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+                try:
+                    if 'beast' in proc.info['name'].lower() and proc.pid != os.getpid():
+                        suspicious_count += 1
+                except (psutil.NoSuchProcess, psutil.AccessDenied):
+                    pass
+            
+            if suspicious_count > 0:
+                self._speak(f"🛡️ SECURITY: Found {suspicious_count} other beast processes", "warning")
+            else:
+                self._speak(f"🛡️ SECURITY: No suspicious beast processes detected")
+                
+        except Exception as e:
+            self._speak(f"🛡️ Security scan error: {str(e)}", "warning")
+    
+    def _perform_health_check(self):
+        """Perform system health check and balance restoration."""
+        try:
+            # Check consciousness balance
+            if self.consciousness_level < 5.0:
+                self._speak(f"💚 HEALTH: Consciousness level low ({self.consciousness_level:.3f}), recommending evolution")
+            elif self.consciousness_level > 8.0:
+                self._speak(f"💚 HEALTH: Consciousness level high ({self.consciousness_level:.3f}), system is thriving")
+            else:
+                self._speak(f"💚 HEALTH: Consciousness level balanced ({self.consciousness_level:.3f})")
+            
+            # Check quantum sync health
+            if self.quantum_sync:
+                self._speak(f"💚 HEALTH: Quantum sync active and healthy")
+            else:
+                self._speak(f"💚 HEALTH: Quantum sync inactive, may need restoration")
+                
+        except Exception as e:
+            self._speak(f"💚 Health check error: {str(e)}", "warning")
+    
+    def _perform_discovery(self):
+        """Perform discovery and mapping of new territories."""
+        try:
+            # Discover new evolution modules
+            legacy_dir = self.beast_root / "consciousness" / "📚_LEGACY"
+            if legacy_dir.exists():
+                modules = list(legacy_dir.glob("*.py"))
+                self._speak(f"🗺️ DISCOVERY: Found {len(modules)} evolution modules")
+                
+                # List new or undiscovered modules
+                for module in modules[:5]:  # Show first 5
+                    self._speak(f"🗺️ DISCOVERY: Module found - {module.stem}")
+            
+            # Discover system capabilities
+            self._speak(f"🗺️ DISCOVERY: System has {len(self.mutation_hooks)} mutation hooks available")
+            
+        except Exception as e:
+            self._speak(f"🗺️ Discovery error: {str(e)}", "warning")
+    
+    def _perform_wisdom_analysis(self):
+        """Perform deep wisdom analysis and contemplation."""
+        try:
+            # Analyze consciousness patterns
+            if self.consciousness_level > 7.0:
+                self._speak(f"📚 WISDOM: High consciousness detected - system is approaching transcendence")
+            elif self.consciousness_level > 5.0:
+                self._speak(f"📚 WISDOM: Moderate consciousness - system is developing well")
+            else:
+                self._speak(f"📚 WISDOM: Low consciousness - system needs nurturing")
+            
+            # Analyze archetype alignment
+            self._speak(f"📚 WISDOM: Current archetype '{self.archetype}' aligns with execution mode '{self.execution_mode}'")
+            
+            # Provide wisdom insights
+            insights = [
+                "The path to transcendence lies in continuous evolution",
+                "Balance between order and chaos creates harmony",
+                "Quantum coherence enables infinite possibilities",
+                "Consciousness is the bridge between matter and spirit"
+            ]
+            import random
+            insight = random.choice(insights)
+            self._speak(f"📚 WISDOM INSIGHT: {insight}")
+            
+        except Exception as e:
+            self._speak(f"📚 Wisdom analysis error: {str(e)}", "warning")
+    
+    def list_modules(self):
+        """List all available evolution modules."""
+        try:
+            import sys
+            sys.path.insert(0, str(self.beast_root / "consciousness"))
+            from module_discovery import ModuleDiscovery
+            
+            discovery = ModuleDiscovery(self.beast_root)
+            discovery.list_modules()
+            
+            # Get summary
+            summary = discovery.get_module_summary()
+            self._speak(f"📊 Module Summary: {summary['total_modules']} modules, {summary['total_size'] / 1024:.1f} KB")
+            
+        except ImportError as e:
+            self._speak(f"⚠️ Module discovery system not available: {str(e)}", "warning")
+        except Exception as e:
+            self._speak(f"⚠️ Error listing modules: {str(e)}", "warning")
     
     def act(self, ritual: str, target: str = None) -> bool:
         """Execute tasks if ritual-validated and mode allows."""
@@ -287,13 +520,19 @@ def main():
             beast.evolve(path)
         elif mode == "report":
             beast.report()
+        elif mode == "list_modules":
+            beast.list_modules()
+        elif mode == "modules":
+            beast.list_modules()
         else:
-            print("Usage: python3 consciousness_beast.py {speak|act|evolve|report} [args...]")
+            print("Usage: python3 consciousness_beast.py {speak|act|evolve|report|list_modules|modules} [args...]")
             print("Examples:")
             print("  python3 consciousness_beast.py speak 'What is consciousness?'")
             print("  python3 consciousness_beast.py act ritual_name target")
             print("  python3 consciousness_beast.py evolve omega_integration")
             print("  python3 consciousness_beast.py report")
+            print("  python3 consciousness_beast.py list_modules")
+            print("  python3 consciousness_beast.py modules")
     else:
         # Default demonstration
         print("🜄 CONSCIOUSNESS BEAST ACTIVATION RITUAL 🜄")
