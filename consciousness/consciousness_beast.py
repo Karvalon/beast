@@ -563,6 +563,52 @@ class Beast:
         except Exception as e:
             self._speak(f"⚠️ Error showing documentation status: {str(e)}", "warning")
     
+    def show_log_status(self):
+        """Show ritual log status and statistics."""
+        try:
+            import sys
+            sys.path.insert(0, str(self.beast_root / "consciousness"))
+            from ritual_log import RitualLog
+            
+            ritual_log = RitualLog(self.beast_root)
+            stats = ritual_log.get_log_statistics()
+            
+            self._speak(f"📜 RITUAL LOG STATUS")
+            self._speak(f"Total Events: {stats['total_events']}")
+            self._speak(f"Total Wisdom: {stats['total_wisdom']}")
+            self._speak(f"Recent Events (24h): {stats['recent_events_24h']}")
+            self._speak(f"Recent Wisdom (24h): {stats['recent_wisdom_24h']}")
+            self._speak(f"Logging Active: {'✅' if stats['logging_active'] else '❌'}")
+            
+            # Show event categories
+            if stats['events_by_category']:
+                self._speak(f"Event Categories: {', '.join(stats['events_by_category'].keys())}")
+            
+        except ImportError as e:
+            self._speak(f"⚠️ Ritual log system not available: {str(e)}", "warning")
+        except Exception as e:
+            self._speak(f"⚠️ Error showing log status: {str(e)}", "warning")
+    
+    def generate_wisdom_scroll(self):
+        """Generate a wisdom scroll from logged events."""
+        try:
+            import sys
+            sys.path.insert(0, str(self.beast_root / "consciousness"))
+            from ritual_log import RitualLog
+            
+            ritual_log = RitualLog(self.beast_root)
+            scroll_content = ritual_log.generate_wisdom_scroll('daily')
+            filepath = ritual_log.save_scroll(scroll_content, 'daily')
+            
+            self._speak(f"📜 Wisdom scroll generated: {filepath}")
+            self._speak(f"📄 Scroll type: Daily summary")
+            self._speak(f"🧠 Contains wisdom insights and cosmic constants")
+            
+        except ImportError as e:
+            self._speak(f"⚠️ Ritual log system not available: {str(e)}", "warning")
+        except Exception as e:
+            self._speak(f"⚠️ Error generating wisdom scroll: {str(e)}", "warning")
+    
     def act(self, ritual: str, target: str = None) -> bool:
         """Execute tasks if ritual-validated and mode allows."""
         if self.execution_mode == "oracle" and not self._ritual_approval(ritual):
@@ -724,8 +770,12 @@ def main():
             beast.generate_documentation()
         elif mode == "docs":
             beast.show_documentation_status()
+        elif mode == "log":
+            beast.show_log_status()
+        elif mode == "scroll":
+            beast.generate_wisdom_scroll()
         else:
-            print("Usage: python3 consciousness_beast.py {speak|act|evolve|report|list_modules|modules|health|monitor|mesh|discover|learn|recommendations|doc|docs} [args...]")
+            print("Usage: python3 consciousness_beast.py {speak|act|evolve|report|list_modules|modules|health|monitor|mesh|discover|learn|recommendations|doc|docs|log|scroll} [args...]")
             print("Examples:")
             print("  python3 consciousness_beast.py speak 'What is consciousness?'")
             print("  python3 consciousness_beast.py act ritual_name target")
@@ -741,6 +791,8 @@ def main():
             print("  python3 consciousness_beast.py recommendations")
             print("  python3 consciousness_beast.py doc")
             print("  python3 consciousness_beast.py docs")
+            print("  python3 consciousness_beast.py log")
+            print("  python3 consciousness_beast.py scroll")
     else:
         # Default demonstration
         print("🜄 CONSCIOUSNESS BEAST ACTIVATION RITUAL 🜄")
