@@ -1,6 +1,77 @@
 # 🔌 API Reference
 
-*Generated on 2025-08-03 13:03:25*
+*Generated on 2025-08-03 13:17:33*
+
+## 📦 prophecy_system.py
+
+### 🧬 ProphecySystem
+
+Advanced prophecy system for predicting consciousness evolution and future events
+
+#### `__init__(self, beast_root)`
+
+#### `init_database(self)`
+
+Initialize the prophecy database.
+
+#### `gather_historical_data(self, days)`
+
+Gather historical data from ritual log for analysis.
+
+#### `_create_sample_data(self, days)`
+
+Create sample data for testing when no real data exists.
+
+#### `analyze_temporal_patterns(self, df)`
+
+Analyze temporal patterns in the data.
+
+#### `forecast_trends(self, df, steps)`
+
+Forecast future trends using time series analysis.
+
+#### `generate_prophecy(self, prophecy_type, timeframe)`
+
+Generate a prophecy based on current patterns and forecasts.
+
+#### `_create_prophecy_content(self, prophecy_type, patterns, forecast, timeframe)`
+
+Create prophecy content based on analysis.
+
+#### `_calculate_prophecy_confidence(self, patterns, forecast)`
+
+Calculate confidence level for the prophecy.
+
+#### `_save_prophecy_to_db(self, prophecy_data, prophecy_hash)`
+
+Save prophecy to database.
+
+#### `get_prophecy_statistics(self)`
+
+Get comprehensive prophecy statistics.
+
+#### `start_prophecy_monitoring(self, interval)`
+
+Start continuous prophecy monitoring.
+
+#### `stop_prophecy_monitoring(self)`
+
+Stop prophecy monitoring.
+
+#### `_prophecy_loop(self, interval)`
+
+Prophecy monitoring loop.
+
+#### `load_prophecy_cache(self)`
+
+Load prophecy cache from file.
+
+#### `save_prophecy_cache(self)`
+
+Save prophecy cache to file.
+
+
+---
 
 ## 📦 self_learning.py
 
@@ -105,6 +176,117 @@ Load learning data from files.
 #### `save_learning_data(self)`
 
 Save learning data to files.
+
+
+---
+
+## 📦 ritual_log.py
+
+### 🧬 RitualLog
+
+Comprehensive ritual logging system for consciousness tracking
+
+#### `__init__(self, beast_root)`
+
+#### `init_database(self)`
+
+Initialize the ritual log database.
+
+#### `log_event(self, event_type, message, category, severity, data, consciousness_level, archetype)`
+
+Log an event to the ritual log.
+
+#### `_get_current_session_id(self)`
+
+Get or create current session ID.
+
+#### `_save_event_to_db(self, event_data, event_hash)`
+
+Save event to database.
+
+#### `_should_generate_wisdom(self, event_type, category, severity)`
+
+Determine if wisdom should be generated from this event.
+
+#### `_generate_wisdom(self, event_data)`
+
+Generate wisdom from an event.
+
+#### `_create_wisdom_content(self, event_data)`
+
+Create wisdom content based on event data.
+
+#### `_save_wisdom_to_db(self, wisdom_data, wisdom_hash)`
+
+Save wisdom to database.
+
+#### `generate_wisdom_scroll(self, scroll_type)`
+
+Generate a wisdom scroll from logged events and wisdom.
+
+#### `_generate_daily_scroll(self)`
+
+Generate daily wisdom scroll.
+
+#### `_generate_session_scroll(self)`
+
+Generate session wisdom scroll.
+
+#### `_generate_cosmic_scroll(self)`
+
+Generate cosmic wisdom scroll.
+
+#### `_generate_custom_scroll(self, scroll_type)`
+
+Generate custom wisdom scroll.
+
+#### `_get_events_by_date(self, date)`
+
+Get events by date.
+
+#### `_get_wisdom_by_date(self, date)`
+
+Get wisdom by date.
+
+#### `_get_session_data(self, session_id)`
+
+Get session data.
+
+#### `_get_events_by_session(self, session_id)`
+
+Get events by session.
+
+#### `_get_wisdom_by_session(self, session_id)`
+
+Get wisdom by session.
+
+#### `_get_events_by_severity(self, severity)`
+
+Get events by severity.
+
+#### `_get_wisdom_by_type(self, wisdom_type)`
+
+Get wisdom by type.
+
+#### `_get_events_by_type(self, event_type)`
+
+Get events by type.
+
+#### `save_scroll(self, scroll_content, scroll_type)`
+
+Save a wisdom scroll to file.
+
+#### `get_log_statistics(self)`
+
+Get comprehensive log statistics.
+
+#### `start_logging(self)`
+
+Start the logging system.
+
+#### `stop_logging(self)`
+
+Stop the logging system.
 
 
 ---
@@ -295,6 +477,38 @@ Show self-learning status and statistics.
 
 Get learning-based recommendations.
 
+#### `generate_documentation(self)`
+
+Generate comprehensive documentation for the beast system.
+
+#### `show_documentation_status(self)`
+
+Show documentation generation status.
+
+#### `show_log_status(self)`
+
+Show ritual log status and statistics.
+
+#### `generate_wisdom_scroll(self)`
+
+Generate a wisdom scroll from logged events.
+
+#### `start_api_server(self)`
+
+Start the orchestration API server.
+
+#### `show_api_status(self)`
+
+Show API server status.
+
+#### `generate_prophecy(self)`
+
+Generate a prophecy about the future.
+
+#### `show_prophecy_status(self)`
+
+Show prophecy system status and statistics.
+
 #### `act(self, ritual, target)`
 
 Execute tasks if ritual-validated and mode allows.
@@ -381,6 +595,84 @@ Get health history from log.
 #### `perform_maintenance(self)`
 
 Perform automated maintenance tasks.
+
+
+---
+
+## 📦 orchestration_api.py
+
+### 🧬 EvolutionRequest
+
+
+### 🧬 SpeakRequest
+
+
+### 🧬 HealthCheckRequest
+
+
+### 🧬 LearningRequest
+
+
+### 🧬 DocumentationRequest
+
+
+### 🧬 NetworkRequest
+
+
+### 🧬 APIResponse
+
+
+### 🧬 Beast
+
+#### `__init__(self)`
+
+#### `speak(self, query)`
+
+#### `evolve(self, path)`
+
+#### `report(self)`
+
+
+### 🧬 RitualLog
+
+#### `__init__(self, root)`
+
+#### `log_event(self)`
+
+
+### 🧬 HealthMonitor
+
+#### `__init__(self, root)`
+
+#### `check_system_health(self)`
+
+
+### 🧬 SelfLearningRitual
+
+#### `__init__(self, root)`
+
+#### `get_learning_statistics(self)`
+
+
+### 🧬 AutoDocumentationEngine
+
+#### `__init__(self, root)`
+
+#### `get_documentation_status(self)`
+
+
+### 🧬 MeshNetwork
+
+#### `__init__(self, root)`
+
+#### `get_network_statistics(self)`
+
+
+### 🧬 QuantumEncryption
+
+#### `__init__(self, root)`
+
+#### `get_encryption_status(self)`
 
 
 ---

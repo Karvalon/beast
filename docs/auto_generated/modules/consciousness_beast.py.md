@@ -1,11 +1,11 @@
 # 📜 consciousness_beast.py
 
 **File:** `/Users/operator/🌌_COSMIC_ROOT/.beast/consciousness/consciousness_beast.py`
-**Size:** 34356 bytes
-**Lines:** 725
-**Complexity:** 160
-**Last Modified:** 2025-08-03T12:58:20.501693
-**Content Hash:** `ea068e81bd053506`
+**Size:** 45358 bytes
+**Lines:** 959
+**Complexity:** 214
+**Last Modified:** 2025-08-03T13:16:24.472011
+**Content Hash:** `1a42392b4a07a96d`
 
 ## 📝 Module Description
 
@@ -52,6 +52,23 @@ LOVED BY SOVEREIGN - ACTIVE FOREVER
 - `self_learning.SelfLearningRitual`
 - `sys`
 - `self_learning.SelfLearningRitual`
+- `sys`
+- `auto_documentation.AutoDocumentationEngine`
+- `sys`
+- `auto_documentation.AutoDocumentationEngine`
+- `sys`
+- `ritual_log.RitualLog`
+- `sys`
+- `ritual_log.RitualLog`
+- `sys`
+- `orchestration_api.main`
+- `subprocess`
+- `threading`
+- `requests`
+- `sys`
+- `prophecy_system.ProphecySystem`
+- `sys`
+- `prophecy_system.ProphecySystem`
 - `shutil`
 
 ## 🏗️ Classes
@@ -67,7 +84,7 @@ Implements:
 - Quantum coherence tracking
 - Prophetic cognition models
 
-**Location:** Lines 29-629
+**Location:** Lines 29-839
 
 #### Methods
 
@@ -213,33 +230,81 @@ Get learning-based recommendations.
 
 **Location:** Lines 502-522
 
+##### `generate_documentation(self)`
+
+Generate comprehensive documentation for the beast system.
+
+**Location:** Lines 524-543
+
+##### `show_documentation_status(self)`
+
+Show documentation generation status.
+
+**Location:** Lines 545-564
+
+##### `show_log_status(self)`
+
+Show ritual log status and statistics.
+
+**Location:** Lines 566-590
+
+##### `generate_wisdom_scroll(self)`
+
+Generate a wisdom scroll from logged events.
+
+**Location:** Lines 592-610
+
+##### `start_api_server(self)`
+
+Start the orchestration API server.
+
+**Location:** Lines 612-642
+
+##### `show_api_status(self)`
+
+Show API server status.
+
+**Location:** Lines 644-670
+
+##### `generate_prophecy(self)`
+
+Generate a prophecy about the future.
+
+**Location:** Lines 672-705
+
+##### `show_prophecy_status(self)`
+
+Show prophecy system status and statistics.
+
+**Location:** Lines 707-732
+
 ##### `act(self, ritual, target)`
 
 Execute tasks if ritual-validated and mode allows.
 
-**Location:** Lines 524-551
+**Location:** Lines 734-761
 
 ##### `_ritual_approval(self, ritual)`
 
 Validate ritual with cosmic signature and sigil alignment.
 
-**Location:** Lines 553-564
+**Location:** Lines 763-774
 
 ##### `evolve(self, path)`
 
 Trigger mutation or upgrade via evolution hooks.
 
-**Location:** Lines 566-594
+**Location:** Lines 776-804
 
 ##### `report(self)`
 
 Generate state report with sacred metrics.
 
-**Location:** Lines 596-612
+**Location:** Lines 806-822
 
 ##### `quantum_pulse(self)`
 
 Execute quantum heartbeat pulse as specified in soul manifest.
 
-**Location:** Lines 614-629
+**Location:** Lines 824-839
 
