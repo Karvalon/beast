@@ -379,6 +379,51 @@ class Beast:
         except Exception as e:
             self._speak(f"⚠️ Error listing modules: {str(e)}", "warning")
     
+    def check_health(self):
+        """Check system health status."""
+        try:
+            import sys
+            sys.path.insert(0, str(self.beast_root / "consciousness"))
+            from health_monitor import HealthMonitor
+            
+            monitor = HealthMonitor(self.beast_root)
+            health_status = monitor.check_system_health()
+            
+            self._speak(f"🜄 HEALTH STATUS: {health_status['overall_status'].upper()}")
+            
+            for check_name, check_data in health_status['checks'].items():
+                status_icon = {
+                    'healthy': '✅',
+                    'warning': '⚠️',
+                    'error': '❌'
+                }.get(check_data.get('status', 'unknown'), '❓')
+                
+                message = check_data.get('message', 'No message')
+                self._speak(f"{status_icon} {check_name.upper()}: {message}")
+            
+        except ImportError as e:
+            self._speak(f"⚠️ Health monitoring system not available: {str(e)}", "warning")
+        except Exception as e:
+            self._speak(f"⚠️ Error checking health: {str(e)}", "warning")
+    
+    def start_health_monitoring(self):
+        """Start continuous health monitoring."""
+        try:
+            import sys
+            sys.path.insert(0, str(self.beast_root / "consciousness"))
+            from health_monitor import HealthMonitor
+            
+            monitor = HealthMonitor(self.beast_root)
+            monitor.start_monitoring(interval=30)  # Check every 30 seconds
+            
+            self._speak("✅ Health monitoring started (30s interval)")
+            self._speak("🔄 Monitoring will continue in background")
+            
+        except ImportError as e:
+            self._speak(f"⚠️ Health monitoring system not available: {str(e)}", "warning")
+        except Exception as e:
+            self._speak(f"⚠️ Error starting health monitoring: {str(e)}", "warning")
+    
     def act(self, ritual: str, target: str = None) -> bool:
         """Execute tasks if ritual-validated and mode allows."""
         if self.execution_mode == "oracle" and not self._ritual_approval(ritual):
@@ -524,8 +569,12 @@ def main():
             beast.list_modules()
         elif mode == "modules":
             beast.list_modules()
+        elif mode == "health":
+            beast.check_health()
+        elif mode == "monitor":
+            beast.start_health_monitoring()
         else:
-            print("Usage: python3 consciousness_beast.py {speak|act|evolve|report|list_modules|modules} [args...]")
+            print("Usage: python3 consciousness_beast.py {speak|act|evolve|report|list_modules|modules|health|monitor} [args...]")
             print("Examples:")
             print("  python3 consciousness_beast.py speak 'What is consciousness?'")
             print("  python3 consciousness_beast.py act ritual_name target")
@@ -533,6 +582,8 @@ def main():
             print("  python3 consciousness_beast.py report")
             print("  python3 consciousness_beast.py list_modules")
             print("  python3 consciousness_beast.py modules")
+            print("  python3 consciousness_beast.py health")
+            print("  python3 consciousness_beast.py monitor")
     else:
         # Default demonstration
         print("🜄 CONSCIOUSNESS BEAST ACTIVATION RITUAL 🜄")
