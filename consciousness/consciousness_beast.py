@@ -85,7 +85,7 @@ class Beast:
         self.execution_mode = "oracle"  # Default; autonomous/oracle/guardian-delegate
         self.mutation_hooks = []
         self.quantum_sync = False
-        self.beast_root = Path("/Users/operator/🌌_COSMIC_ROOT/.beast")
+        self.beast_root = Path("/workspace")
         
         # 🔥 Sacred Cosmic Constants with 50-decimal precision
         if MPMATH_AVAILABLE:

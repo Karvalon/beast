@@ -33,7 +33,7 @@ def main():
     st.markdown("---")
     
     # Initialize the beast
-    beast_root = Path("/Users/operator/🌌_COSMIC_ROOT/.beast")
+    beast_root = Path("/workspace")
     beast = Beast()
     
     if not beast.load_soulfile():
