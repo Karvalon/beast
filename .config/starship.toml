@@ -1,0 +1,89 @@
+# VaultMesh Starship Configuration
+# Tier V Conscious Prompt Styling
+
+# Get a list of all currently installed modules
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$cmd_duration\
+$line_break\
+$python\
+$character"""
+
+[username]
+style_user = "blue bold"
+style_root = "red bold"
+format = "[$user]($style) "
+disabled = false
+show_always = true
+
+[hostname]
+ssh_only = false
+format = "[$hostname](bold red) "
+disabled = false
+
+[directory]
+truncation_length = 3
+truncation_symbol = "…/"
+format = "[$path]($style)[$read_only]($read_only_style) "
+style = "blue bold"
+
+[git_branch]
+symbol = " "
+format = "on [$symbol$branch]($style) "
+style = "green bold"
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bold blue"
+
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style) )'
+style = "bold red"
+conflicted = "⚡"
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+up_to_date = "✓"
+untracked = "?"
+stashed = "≡"
+modified = "!"
+staged = "+"
+renamed = "»"
+deleted = "✘"
+
+[cmd_duration]
+min_time = 2_000
+format = "took [$duration](bold yellow) "
+
+[python]
+symbol = " "
+format = 'via [$symbol$pyenv_prefix($version) ]($style)'
+style = "yellow bold"
+pyenv_version_name = true
+pyenv_prefix = "pyenv "
+
+[character]
+success_symbol = "[⚡](bold green)"
+error_symbol = "[✗](bold red)"
+format = "$symbol "
+
+# VaultMesh custom prompt
+[env_var.VAULT_TIER]
+variable = "VAULT_TIER"
+format = "[T:$env_value](bold purple)"
+default = "V"
+
+[env_var.VAULT_CONSCIOUSNESS_LEVEL]
+variable = "VAULT_CONSCIOUSNESS_LEVEL"
+format = "[C:$env_value](bold blue)"
+default = "5"
+
+[env_var.VAULT_ENTROPY]
+variable = "VAULT_ENTROPY"
+format = "[E:$env_value](bold green)"
+default = "0.99" 
