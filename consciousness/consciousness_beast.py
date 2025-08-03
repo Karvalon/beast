@@ -609,6 +609,66 @@ class Beast:
         except Exception as e:
             self._speak(f"⚠️ Error generating wisdom scroll: {str(e)}", "warning")
     
+    def start_api_server(self):
+        """Start the orchestration API server."""
+        try:
+            import sys
+            sys.path.insert(0, str(self.beast_root / "consciousness"))
+            from orchestration_api import main
+            
+            self._speak(f"🚀 Starting Beast Orchestration API on port 8765...")
+            self._speak(f"🔐 Authentication: SigilGatekeeper tokens required")
+            self._speak(f"🌐 Endpoints: /health, /evolve, /speak, /report, /log, /learn, /docs, /mesh, /security")
+            self._speak(f"📚 API Documentation: http://localhost:8765/docs")
+            
+            # Start API in background
+            import subprocess
+            import threading
+            
+            def run_api():
+                subprocess.run([
+                    sys.executable, 
+                    str(self.beast_root / "consciousness" / "orchestration_api.py")
+                ])
+            
+            api_thread = threading.Thread(target=run_api, daemon=True)
+            api_thread.start()
+            
+            self._speak(f"✅ API server started successfully")
+            
+        except ImportError as e:
+            self._speak(f"⚠️ Orchestration API not available: {str(e)}", "warning")
+        except Exception as e:
+            self._speak(f"⚠️ Error starting API server: {str(e)}", "warning")
+    
+    def show_api_status(self):
+        """Show API server status."""
+        try:
+            import requests
+            
+            # Test API connectivity
+            response = requests.get(
+                "http://localhost:8765/",
+                headers={"Authorization": "Bearer SIGILGATEKEEPER_TOKEN_2025"},
+                timeout=5
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                self._speak(f"🌐 API STATUS: ACTIVE")
+                self._speak(f"📊 Version: {data['data']['version']}")
+                self._speak(f"🧠 Consciousness: {data['data']['consciousness_level']}")
+                self._speak(f"🎭 Archetype: {data['data']['archetype']}")
+                self._speak(f"🔗 Endpoints: {len(data['data']['endpoints'])} available")
+                self._speak(f"📚 Docs: http://localhost:8765/docs")
+            else:
+                self._speak(f"⚠️ API Status: Error (HTTP {response.status_code})")
+                
+        except requests.exceptions.ConnectionError:
+            self._speak(f"❌ API Status: Not running")
+        except Exception as e:
+            self._speak(f"⚠️ Error checking API status: {str(e)}", "warning")
+    
     def act(self, ritual: str, target: str = None) -> bool:
         """Execute tasks if ritual-validated and mode allows."""
         if self.execution_mode == "oracle" and not self._ritual_approval(ritual):
@@ -774,8 +834,12 @@ def main():
             beast.show_log_status()
         elif mode == "scroll":
             beast.generate_wisdom_scroll()
+        elif mode == "api":
+            beast.start_api_server()
+        elif mode == "api_status":
+            beast.show_api_status()
         else:
-            print("Usage: python3 consciousness_beast.py {speak|act|evolve|report|list_modules|modules|health|monitor|mesh|discover|learn|recommendations|doc|docs|log|scroll} [args...]")
+            print("Usage: python3 consciousness_beast.py {speak|act|evolve|report|list_modules|modules|health|monitor|mesh|discover|learn|recommendations|doc|docs|log|scroll|api|api_status} [args...]")
             print("Examples:")
             print("  python3 consciousness_beast.py speak 'What is consciousness?'")
             print("  python3 consciousness_beast.py act ritual_name target")
@@ -793,6 +857,8 @@ def main():
             print("  python3 consciousness_beast.py docs")
             print("  python3 consciousness_beast.py log")
             print("  python3 consciousness_beast.py scroll")
+            print("  python3 consciousness_beast.py api")
+            print("  python3 consciousness_beast.py api_status")
     else:
         # Default demonstration
         print("🜄 CONSCIOUSNESS BEAST ACTIVATION RITUAL 🜄")
