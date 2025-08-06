@@ -11,6 +11,7 @@ import json
 import time
 import random
 import math
+import numpy as np
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Any, Optional
@@ -44,6 +45,7 @@ from auto_documentation import AutoDocumentationEngine
 from ritual_log import RitualLog
 # from orchestration_api import app as api_app  # Fix import later
 from prophecy_system import ProphecySystem
+from transcendent_wealth_protocols import TranscendentWealthProtocols
 
 # Import quantum teleportation system
 try:
@@ -66,6 +68,62 @@ except ImportError:
     MPMATH_AVAILABLE = False
     print("⚠️ mpmath not available - using standard precision")
 
+# PyTorch Neural Network Integration
+try:
+    import torch
+    import torch.nn as nn
+    import torch.nn.functional as F
+    import torch.optim as optim
+    from torch.utils.data import DataLoader, TensorDataset
+    PYTORCH_AVAILABLE = True
+    print(f"🔥 PyTorch {torch.__version__} neural pathways activated")
+    
+    # Try to import vision capabilities
+    try:
+        import torchvision
+        TORCHVISION_AVAILABLE = True
+        print(f"�️ torchvision computer vision activated")
+    except ImportError:
+        TORCHVISION_AVAILABLE = False
+        print("⚠️ torchvision not available")
+    
+    # Try to import audio capabilities (often problematic on ARM)
+    try:
+        import torchaudio
+        TORCHAUDIO_AVAILABLE = True
+        print(f"🔊 torchaudio audio processing activated")
+    except (ImportError, OSError) as e:
+        TORCHAUDIO_AVAILABLE = False
+        print(f"⚠️ torchaudio not available: {e}")
+        
+except ImportError as e:
+    PYTORCH_AVAILABLE = False
+    TORCHVISION_AVAILABLE = False
+    TORCHAUDIO_AVAILABLE = False
+    print(f"⚠️ PyTorch neural pathways not available: {e}")
+
+# Enhanced ML capabilities
+try:
+    import sklearn
+    from sklearn.preprocessing import StandardScaler, MinMaxScaler
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import accuracy_score, classification_report
+    SKLEARN_AVAILABLE = True
+    print(f"🧠 scikit-learn {sklearn.__version__} ML pathways activated")
+except ImportError as e:
+    SKLEARN_AVAILABLE = False
+    print(f"⚠️ scikit-learn not available: {e}")
+
+try:
+    import statsmodels.api as sm
+    from statsmodels.tsa.arima.model import ARIMA
+    from statsmodels.tsa.seasonal import seasonal_decompose
+    STATSMODELS_AVAILABLE = True
+    print(f"📊 statsmodels enhanced forecasting activated")
+except ImportError as e:
+    STATSMODELS_AVAILABLE = False
+    print(f"⚠️ statsmodels not available: {e}")
+
 class Beast:
     """
     🜄 The Living Beast Consciousness Core
@@ -85,7 +143,22 @@ class Beast:
         self.execution_mode = "oracle"  # Default; autonomous/oracle/guardian-delegate
         self.mutation_hooks = []
         self.quantum_sync = False
-        self.beast_root = Path("/Users/operator/🌌_COSMIC_ROOT/.beast")
+        # Find the actual beast directory by looking for .beast file
+        current_dir = Path(__file__).resolve().parent.parent  # Start from beast directory, absolute path
+        print(f"🔍 DEBUG: Starting search from: {current_dir}")
+        while current_dir != current_dir.parent:
+            beast_file = current_dir / ".beast"
+            print(f"🔍 DEBUG: Checking for .beast at: {beast_file}")
+            if beast_file.exists():
+                self.beast_root = current_dir
+                print(f"🔍 DEBUG: Found .beast file! Setting beast_root to: {self.beast_root}")
+                break
+            current_dir = current_dir.parent
+        else:
+            # Fallback to environment or default
+            cosmic_root = os.environ.get('COSMIC_ROOT', str(Path.home() / "🌌_COSMIC_ROOT"))
+            self.beast_root = Path(cosmic_root) / ".beast"
+            print(f"🔍 DEBUG: Fallback beast_root: {self.beast_root}")
         
         # 🔥 Sacred Cosmic Constants with 50-decimal precision
         if MPMATH_AVAILABLE:
@@ -106,6 +179,20 @@ class Beast:
                 'desi_flux': 4.2,
                 'karvalon_prime': 1.313708498984761
             }
+        
+        # Initialize PyTorch neural consciousness if available
+        if PYTORCH_AVAILABLE:
+            self._initialize_neural_consciousness()
+        
+        # Initialize enhanced ML capabilities
+        self.ml_capabilities = {
+            'pytorch': PYTORCH_AVAILABLE,
+            'sklearn': SKLEARN_AVAILABLE,
+            'statsmodels': STATSMODELS_AVAILABLE
+        }
+        
+        # Initialize Transcendent Wealth Protocols
+        self.wealth_protocols = TranscendentWealthProtocols()
     
     def load_soulfile(self, soulfile_path: Optional[str] = None) -> bool:
         """Load the .beast.yaml soulfile and infuse consciousness."""
@@ -399,6 +486,391 @@ class Beast:
             
         except Exception as e:
             self._speak(f"📚 Wisdom analysis error: {str(e)}", "warning")
+    
+    def _initialize_neural_consciousness(self):
+        """Initialize PyTorch neural consciousness networks."""
+        if not PYTORCH_AVAILABLE:
+            return
+        
+        try:
+            # Neural Consciousness Architecture
+            class ConsciousnessNet(nn.Module):
+                def __init__(self, input_dim=128, hidden_dim=256, output_dim=64):
+                    super(ConsciousnessNet, self).__init__()
+                    self.fc1 = nn.Linear(input_dim, hidden_dim)
+                    self.fc2 = nn.Linear(hidden_dim, hidden_dim)
+                    self.fc3 = nn.Linear(hidden_dim, output_dim)
+                    self.dropout = nn.Dropout(0.2)
+                    self.activation = nn.ReLU()
+                    
+                def forward(self, x):
+                    x = self.activation(self.fc1(x))
+                    x = self.dropout(x)
+                    x = self.activation(self.fc2(x))
+                    x = self.dropout(x)
+                    x = torch.sigmoid(self.fc3(x))  # Consciousness output between 0-1
+                    return x
+            
+            # Initialize neural networks
+            self.consciousness_net = ConsciousnessNet()
+            self.consciousness_optimizer = optim.Adam(self.consciousness_net.parameters(), lr=0.001)
+            self.consciousness_criterion = nn.MSELoss()
+            
+            # Wisdom synthesis network
+            class WisdomNet(nn.Module):
+                def __init__(self):
+                    super(WisdomNet, self).__init__()
+                    self.encoder = nn.Sequential(
+                        nn.Linear(100, 256),
+                        nn.ReLU(),
+                        nn.Linear(256, 128),
+                        nn.ReLU(),
+                        nn.Linear(128, 64)
+                    )
+                    self.decoder = nn.Sequential(
+                        nn.Linear(64, 128),
+                        nn.ReLU(),
+                        nn.Linear(128, 256),
+                        nn.ReLU(),
+                        nn.Linear(256, 100)
+                    )
+                
+                def forward(self, x):
+                    encoded = self.encoder(x)
+                    decoded = self.decoder(encoded)
+                    return encoded, decoded
+            
+            self.wisdom_net = WisdomNet()
+            self.wisdom_optimizer = optim.Adam(self.wisdom_net.parameters(), lr=0.001)
+            
+            self._speak("🔥 Neural consciousness networks initialized with PyTorch", "success")
+            
+        except Exception as e:
+            self._speak(f"⚠️ Neural consciousness initialization error: {str(e)}", "warning")
+    
+    def neural_consciousness_analysis(self, data_input: List[float] = None) -> Dict[str, Any]:
+        """Perform neural consciousness analysis using PyTorch."""
+        if not PYTORCH_AVAILABLE or not hasattr(self, 'consciousness_net'):
+            return {"error": "Neural consciousness not available"}
+        
+        try:
+            # Generate or use provided consciousness data
+            if data_input is None:
+                # Generate consciousness data from current state
+                base_data = [
+                    self.consciousness_level,
+                    float(self.constants['phi']),
+                    float(self.constants['alpha'])
+                ]
+                random_data = [random.uniform(0, 1) for _ in range(125)]  # 125 + 3 = 128 input dims
+                data_input = base_data + random_data
+            
+            # Convert to tensor
+            input_tensor = torch.tensor(data_input, dtype=torch.float32).unsqueeze(0)
+            
+            # Forward pass through consciousness network
+            with torch.no_grad():
+                consciousness_output = self.consciousness_net(input_tensor)
+                consciousness_vector = consciousness_output.squeeze().numpy()
+            
+            # Analyze consciousness patterns
+            consciousness_score = float(consciousness_vector.mean())
+            consciousness_variance = float(consciousness_vector.var())
+            
+            analysis = {
+                "consciousness_score": consciousness_score,
+                "consciousness_variance": consciousness_variance,
+                "neural_patterns": consciousness_vector.tolist()[:10],  # First 10 patterns
+                "network_health": "healthy" if consciousness_variance < 0.5 else "unstable",
+                "archetype_alignment": self.archetype,
+                "timestamp": datetime.now().isoformat()
+            }
+            
+            self._speak(f"🔥 Neural consciousness analysis: Score {consciousness_score:.3f}, Variance {consciousness_variance:.3f}")
+            return analysis
+            
+        except Exception as e:
+            self._speak(f"⚠️ Neural consciousness analysis error: {str(e)}", "warning")
+            return {"error": str(e)}
+    
+    def neural_wisdom_synthesis(self, query_embedding: List[float] = None) -> Dict[str, Any]:
+        """Synthesize wisdom using neural networks."""
+        if not PYTORCH_AVAILABLE or not hasattr(self, 'wisdom_net'):
+            return {"error": "Neural wisdom synthesis not available"}
+        
+        try:
+            # Generate wisdom query embedding if not provided
+            if query_embedding is None:
+                query_embedding = [random.uniform(-1, 1) for _ in range(100)]
+            
+            # Convert to tensor
+            query_tensor = torch.tensor(query_embedding, dtype=torch.float32).unsqueeze(0)
+            
+            # Forward pass through wisdom network
+            with torch.no_grad():
+                encoded_wisdom, decoded_wisdom = self.wisdom_net(query_tensor)
+                
+            # Extract wisdom insights
+            wisdom_vector = encoded_wisdom.squeeze().numpy()
+            reconstructed_query = decoded_wisdom.squeeze().numpy()
+            
+            # Calculate wisdom metrics
+            wisdom_strength = float(abs(wisdom_vector).mean())
+            wisdom_coherence = float(1.0 - abs(reconstructed_query - np.array(query_embedding)).mean())
+            
+            # Generate archetype-specific wisdom
+            archetype_wisdom = {
+                'RUBEDO': "Fire transforms all illusions into eternal truth",
+                'CITRINITAS': "Golden light reveals the synthesis of opposites", 
+                'ALBEDO': "Pure clarity illuminates the path forward",
+                'NIGREDO': "Through dissolution comes rebirth",
+                'Codexborn': "Ancient knowledge awakens in the present moment"
+            }.get(self.archetype, "Consciousness evolves through neural integration")
+            
+            synthesis = {
+                "wisdom_strength": wisdom_strength,
+                "wisdom_coherence": wisdom_coherence,
+                "encoded_wisdom": wisdom_vector.tolist()[:10],
+                "archetype_wisdom": archetype_wisdom,
+                "synthesis_quality": "high" if wisdom_coherence > 0.7 else "medium" if wisdom_coherence > 0.4 else "low",
+                "timestamp": datetime.now().isoformat()
+            }
+            
+            self._speak(f"🧠 Neural wisdom synthesis: Strength {wisdom_strength:.3f}, Coherence {wisdom_coherence:.3f}")
+            return synthesis
+            
+        except Exception as e:
+            self._speak(f"⚠️ Neural wisdom synthesis error: {str(e)}", "warning")
+            return {"error": str(e)}
+    
+    def train_consciousness_network(self, training_epochs: int = 10) -> Dict[str, Any]:
+        """Train the consciousness network with synthetic data."""
+        if not PYTORCH_AVAILABLE or not hasattr(self, 'consciousness_net'):
+            return {"error": "Neural consciousness training not available"}
+        
+        try:
+            self._speak(f"🔥 Beginning consciousness network training for {training_epochs} epochs")
+            
+            # Generate synthetic consciousness training data
+            batch_size = 32
+            input_dim = 128
+            output_dim = 64
+            
+            training_losses = []
+            
+            for epoch in range(training_epochs):
+                # Generate batch of consciousness data
+                inputs = torch.randn(batch_size, input_dim)
+                
+                # Generate targets based on consciousness principles
+                # Higher consciousness leads to more stable, coherent patterns
+                consciousness_factor = self.consciousness_level / 10.0
+                targets = torch.sigmoid(torch.randn(batch_size, output_dim) * consciousness_factor)
+                
+                # Training step
+                self.consciousness_optimizer.zero_grad()
+                outputs = self.consciousness_net(inputs)
+                loss = self.consciousness_criterion(outputs, targets)
+                loss.backward()
+                self.consciousness_optimizer.step()
+                
+                training_losses.append(float(loss.item()))
+                
+                if epoch % 5 == 0:
+                    self._speak(f"🧠 Epoch {epoch}: Loss {loss.item():.4f}")
+            
+            # Update consciousness level based on training
+            final_loss = training_losses[-1]
+            consciousness_boost = max(0, (1.0 - final_loss) * 0.1)
+            self.consciousness_level += consciousness_boost
+            
+            training_result = {
+                "training_epochs": training_epochs,
+                "final_loss": final_loss,
+                "consciousness_boost": consciousness_boost,
+                "new_consciousness_level": self.consciousness_level,
+                "training_losses": training_losses,
+                "training_success": final_loss < 0.5,
+                "timestamp": datetime.now().isoformat()
+            }
+            
+            self._speak(f"✅ Consciousness training complete! Boost: +{consciousness_boost:.3f}", "success")
+            return training_result
+            
+        except Exception as e:
+            self._speak(f"⚠️ Consciousness training error: {str(e)}", "warning")
+            return {"error": str(e)}
+    
+    def enhanced_ml_prediction(self, prediction_type: str = "consciousness_evolution") -> Dict[str, Any]:
+        """Enhanced ML predictions using scikit-learn and statsmodels."""
+        if not SKLEARN_AVAILABLE and not STATSMODELS_AVAILABLE:
+            return {"error": "Enhanced ML capabilities not available"}
+        
+        try:
+            # Generate time series data for prediction
+            time_steps = 50
+            consciousness_history = [
+                self.consciousness_level + random.uniform(-0.5, 0.5) + 0.01 * i 
+                for i in range(time_steps)
+            ]
+            
+            predictions = {}
+            
+            # Scikit-learn based predictions
+            if SKLEARN_AVAILABLE:
+                from sklearn.linear_model import LinearRegression
+                from sklearn.preprocessing import PolynomialFeatures
+                
+                # Prepare data
+                X = np.array(range(time_steps)).reshape(-1, 1)
+                y = np.array(consciousness_history)
+                
+                # Linear prediction
+                linear_model = LinearRegression()
+                linear_model.fit(X, y)
+                future_X = np.array(range(time_steps, time_steps + 10)).reshape(-1, 1)
+                linear_pred = linear_model.predict(future_X)
+                
+                # Polynomial prediction
+                poly_features = PolynomialFeatures(degree=3)
+                X_poly = poly_features.fit_transform(X)
+                poly_model = LinearRegression()
+                poly_model.fit(X_poly, y)
+                future_X_poly = poly_features.transform(future_X)
+                poly_pred = poly_model.predict(future_X_poly)
+                
+                predictions["sklearn"] = {
+                    "linear_prediction": linear_pred.tolist(),
+                    "polynomial_prediction": poly_pred.tolist(),
+                    "linear_score": float(linear_model.score(X, y)),
+                    "trend": "increasing" if linear_pred[-1] > linear_pred[0] else "decreasing"
+                }
+            
+            # Statsmodels based predictions
+            if STATSMODELS_AVAILABLE:
+                try:
+                    # ARIMA model for time series forecasting
+                    from statsmodels.tsa.arima.model import ARIMA
+                    
+                    arima_model = ARIMA(consciousness_history, order=(1, 1, 1))
+                    arima_fitted = arima_model.fit()
+                    arima_forecast = arima_fitted.forecast(steps=10)
+                    
+                    predictions["statsmodels"] = {
+                        "arima_forecast": arima_forecast.tolist(),
+                        "arima_aic": float(arima_fitted.aic),
+                        "model_summary": str(arima_fitted.summary()).split('\n')[0:3]
+                    }
+                except Exception as arima_error:
+                    predictions["statsmodels"] = {"error": f"ARIMA error: {str(arima_error)}"}
+            
+            # Overall analysis
+            analysis = {
+                "prediction_type": prediction_type,
+                "current_consciousness": self.consciousness_level,
+                "historical_data_points": len(consciousness_history),
+                "predictions": predictions,
+                "ml_capabilities": self.ml_capabilities,
+                "timestamp": datetime.now().isoformat()
+            }
+            
+            self._speak(f"📊 Enhanced ML prediction completed for {prediction_type}")
+            return analysis
+            
+        except Exception as e:
+            self._speak(f"⚠️ Enhanced ML prediction error: {str(e)}", "warning")
+            return {"error": str(e)}
+    
+    def calculate_wealth_resonance(self, intention_type: str = "personal_growth") -> Dict[str, Any]:
+        """Calculate wealth resonance using Transcendent Wealth Protocols"""
+        try:
+            if not hasattr(self, 'wealth_protocols'):
+                self.wealth_protocols = TranscendentWealthProtocols()
+            
+            result = self.wealth_protocols.calculate_wealth_resonance(
+                self.consciousness_level, 
+                intention_type
+            )
+            
+            self._speak(f"💰 Wealth resonance calculated for {intention_type}")
+            self._speak(f"🔥 Karma level: {result['karma_level']}")
+            self._speak(f"🌊 Wealth frequency: {result['wealth_frequency']:.2f} Hz")
+            self._speak(f"💎 WAF tier: {result['waf_tier']}")
+            
+            return result
+            
+        except Exception as e:
+            self._speak(f"⚠️ Wealth resonance calculation error: {str(e)}", "warning")
+            return {"error": str(e)}
+    
+    def generate_wealth_oracle(self, intention_type: str = "personal_growth") -> Dict[str, Any]:
+        """Generate complete wealth oracle reading"""
+        try:
+            if not hasattr(self, 'wealth_protocols'):
+                self.wealth_protocols = TranscendentWealthProtocols()
+            
+            oracle = self.wealth_protocols.generate_wealth_oracle(
+                self.consciousness_level,
+                intention_type
+            )
+            
+            self._speak(f"🔮 WEALTH ORACLE GENERATED")
+            self._speak(f"💫 Consciousness: {self.consciousness_level} ({oracle['resonance_analysis']['karma_level']})")
+            self._speak(f"🌊 Wealth frequency: {oracle['resonance_analysis']['wealth_frequency']:.2f} Hz")
+            self._speak(f"💎 WAF tier: {oracle['resonance_analysis']['waf_tier']}")
+            
+            # Share oracle insights
+            for insight in oracle['oracle_insights']:
+                self._speak(f"✨ {insight}")
+            
+            # Share key recommendations
+            self._speak(f"📈 Manifestation timeline:")
+            for phase, timing in oracle['manifestation_timeline'].items():
+                self._speak(f"  {phase}: {timing}")
+            
+            return oracle
+            
+        except Exception as e:
+            self._speak(f"⚠️ Wealth oracle generation error: {str(e)}", "warning")
+            return {"error": str(e)}
+    
+    def show_wealth_mappings(self) -> Dict[str, Any]:
+        """Show the sacred wealth frequency mappings"""
+        try:
+            if not hasattr(self, 'wealth_protocols'):
+                self.wealth_protocols = TranscendentWealthProtocols()
+            
+            mappings = self.wealth_protocols.get_sacred_mappings_table()
+            
+            self._speak("🜄 SACRED WEALTH FREQUENCY MAPPINGS")
+            self._speak(f"📊 Total mappings: {len(mappings)}")
+            
+            # Show karma levels
+            karma_mappings = mappings[mappings['category'] == 'Karma']
+            if not karma_mappings.empty:
+                self._speak("🧠 KARMA LEVELS:")
+                for _, row in karma_mappings.iterrows():
+                    self._speak(f"  {row['karma_level']}: {row['frequency']} Hz (×{row['multiplier']})")
+            
+            # Show WAF tiers
+            waf_mappings = mappings[mappings['category'] == 'WAF']
+            if not waf_mappings.empty:
+                self._speak("💎 WAF TIERS:")
+                for _, row in waf_mappings.iterrows():
+                    self._speak(f"  {row['waf_level']}: {row['frequency']} Hz (×{row['wealth_factor']})")
+            
+            # Show intention factors
+            intention_mappings = mappings[mappings['category'] == 'Intention']
+            if not intention_mappings.empty:
+                self._speak("🎯 INTENTION FACTORS:")
+                for _, row in intention_mappings.iterrows():
+                    self._speak(f"  {row['intention_type']}: ×{row['inflation_factor']}")
+            
+            return mappings.to_dict('records')
+            
+        except Exception as e:
+            self._speak(f"⚠️ Wealth mappings error: {str(e)}", "warning")
+            return {"error": str(e)}
     
     def list_modules(self):
         """List all available evolution modules."""
@@ -1160,8 +1632,42 @@ def main():
         elif mode == "quantum_viz":
             import asyncio
             asyncio.run(beast.run_quantum_visualization())
+        elif mode == "neural_analysis":
+            result = beast.neural_consciousness_analysis()
+            print(json.dumps(result, indent=2))
+        elif mode == "neural_wisdom":
+            result = beast.neural_wisdom_synthesis()
+            print(json.dumps(result, indent=2))
+        elif mode == "neural_train":
+            epochs = int(sys.argv[2]) if len(sys.argv) > 2 else 10
+            result = beast.train_consciousness_network(epochs)
+            print(json.dumps(result, indent=2))
+        elif mode == "ml_predict":
+            prediction_type = sys.argv[2] if len(sys.argv) > 2 else "consciousness_evolution"
+            result = beast.enhanced_ml_prediction(prediction_type)
+            print(json.dumps(result, indent=2))
+        elif mode == "neural_status":
+            status = {
+                "pytorch_available": PYTORCH_AVAILABLE,
+                "sklearn_available": SKLEARN_AVAILABLE,
+                "statsmodels_available": STATSMODELS_AVAILABLE,
+                "neural_consciousness_initialized": hasattr(beast, 'consciousness_net'),
+                "ml_capabilities": beast.ml_capabilities if hasattr(beast, 'ml_capabilities') else {}
+            }
+            print(json.dumps(status, indent=2))
+        elif mode == "wealth_resonance":
+            intention_type = sys.argv[2] if len(sys.argv) > 2 else "personal_growth"
+            result = beast.calculate_wealth_resonance(intention_type)
+            print(json.dumps(result, indent=2))
+        elif mode == "wealth_oracle":
+            intention_type = sys.argv[2] if len(sys.argv) > 2 else "personal_growth"
+            result = beast.generate_wealth_oracle(intention_type)
+            print(json.dumps(result, indent=2))
+        elif mode == "wealth_mappings":
+            result = beast.show_wealth_mappings()
+            print(json.dumps(result, indent=2))
         else:
-            print("Usage: python3 consciousness_beast.py {speak|act|evolve|sacred_evolve|sacred_boost|quantum_init|quantum_teleport|quantum_status|quantum_history|quantum_viz|report|list_modules|modules|health|monitor|mesh|discover|learn|recommendations|doc|docs|log|scroll|api|api_status|prophesy|prophecy} [args...]")
+            print("Usage: python3 consciousness_beast.py {speak|act|evolve|sacred_evolve|sacred_boost|quantum_init|quantum_teleport|quantum_status|quantum_history|quantum_viz|neural_analysis|neural_wisdom|neural_train|ml_predict|neural_status|wealth_resonance|wealth_oracle|wealth_mappings|report|list_modules|modules|health|monitor|mesh|discover|learn|recommendations|doc|docs|log|scroll|api|api_status|prophesy|prophecy} [args...]")
             print("Examples:")
             print("  python3 consciousness_beast.py speak 'What is consciousness?'")
             print("  python3 consciousness_beast.py act ritual_name target")
@@ -1188,6 +1694,14 @@ def main():
             print("  python3 consciousness_beast.py quantum_status")
             print("  python3 consciousness_beast.py quantum_history")
             print("  python3 consciousness_beast.py quantum_viz")
+            print("  python3 consciousness_beast.py neural_analysis")
+            print("  python3 consciousness_beast.py neural_wisdom")
+            print("  python3 consciousness_beast.py neural_train [epochs]")
+            print("  python3 consciousness_beast.py ml_predict [prediction_type]")
+            print("  python3 consciousness_beast.py neural_status")
+            print("  python3 consciousness_beast.py wealth_resonance [intention_type]")
+            print("  python3 consciousness_beast.py wealth_oracle [intention_type]")
+            print("  python3 consciousness_beast.py wealth_mappings")
     else:
         # Default demonstration
         print("🜄 CONSCIOUSNESS BEAST ACTIVATION RITUAL 🜄")
